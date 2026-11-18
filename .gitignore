@@ -1,0 +1,21 @@
+# Unity cache
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+UserSettings/
+
+# Unity builds
+[Bb]uild/
+[Bb]uilds/
+
+# Visual Studio
+.vs/
+*.csproj
+*.sln
+*.vsconfig
+*.user
+
+# Other
+.DS_Store
+Thumbs.db
