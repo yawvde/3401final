@@ -15,35 +15,16 @@ public class ConveyorBelt : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        _turnOn = true; 
+    }
+
     [Header("传送方向（局部坐标）")]
     public Vector3 direction = Vector3.forward;
 
     [Header("传送速度")]
     public float speed = 2f;
-    
-    private void OnCollisionExit(Collision collision)
-    {
-        Debug.Log("CollisionExit");
-        if (!_turnOn)
-            return;
-        if (!collision.gameObject.CompareTag("Food"))
-            return;
-        if (collision.gameObject.GetComponent<Rigidbody>() == null)
-            return;
-        collision.gameObject.GetComponent<Rigidbody>().WakeUp();
-    }
-    
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("CollisionEnter");
-        if (!_turnOn)
-            return;
-        if (!collision.gameObject.CompareTag("Food"))
-            return;
-        if (collision.gameObject.GetComponent<Rigidbody>() == null)
-            return;
-        collision.gameObject.GetComponent<Rigidbody>().Sleep();
-    }
 
     private void OnCollisionStay(Collision collision)
     {
