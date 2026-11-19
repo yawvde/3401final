@@ -10,27 +10,33 @@ public class PlayerIngredientInteractor : MonoBehaviour
     public Transform holdPoint;
     public float pickupRange = 10f;
 
+    [Header("Existing Ingredient Pickup")]
+    public float rePickupRange = 3f;
+
     [Header("Placement Settings")]
     public Transform ingredientStack;
     public BoxCollider placementArea;
     public float placementRange = 10f;
     public float stackHeightStep = 0.2f;
 
+    [Header("Drop Settings")]
+    public float dropForwardDistance = 0.8f;
+    public float conveyorReach = 2.5f;
+
+    [Header("Ingredient Size")]
+    public float placedIngredientScale = 0.8f;
+
     private GameObject heldIngredient;
 
     void Update()
     {
-        if (Input.GetKeyDown(interactKey))
-        {
-            if (heldIngredient == null)
-            {
-                TryPickup();
-            }
-            else
-            {
-                TryPlace();
-            }
-        }
+        if (!Input.GetKeyDown(interactKey))
+            return;
+
+        if (heldIngredient == null)
+            TryPickup();
+        else
+            TryPlace();
     }
 
     void TryPickup()
@@ -41,10 +47,74 @@ public class PlayerIngredientInteractor : MonoBehaviour
             return;
         }
 
+        // First, look for ingredients already placed.
+        PlacedIngredient[] items =
+            FindObjectsOfType<PlacedIngredient>();
+
+        PlacedIngredient nearestItem = null;
+        float nearestDistance = rePickupRange;
+
+        foreach (PlacedIngredient item in items)
+        {
+            if (!item.isOnConveyor)
+                continue;
+
+            Vector3 playerPos = transform.position;
+            Vector3 itemPos = item.transform.position;
+
+            playerPos.y = 0f;
+            itemPos.y = 0f;
+
+            float distance =
+                Vector3.Distance(playerPos, itemPos);
+
+            if (distance <= nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestItem = item;
+            }
+        }
+
+        if (nearestItem != null)
+        {
+            // Reuse the existing object.
+            heldIngredient = nearestItem.gameObject;
+            nearestItem.isOnConveyor = false;
+
+            Rigidbody rb =
+                heldIngredient.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                rb.isKinematic = true;
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+
+            SetCollidersEnabled(heldIngredient, false);
+
+            heldIngredient.transform.SetParent(
+                holdPoint, false);
+
+            heldIngredient.transform.localPosition =
+                Vector3.zero;
+
+            heldIngredient.transform.localRotation =
+                Quaternion.identity;
+
+            // Keep the intended hand-held size.
+            heldIngredient.transform.localScale =
+                Vector3.one;
+
+            Debug.Log("Existing ingredient picked up!");
+            return;
+        }
+
+        // Otherwise create a new ingredient from a tray.
         IngredientSource[] sources =
             FindObjectsOfType<IngredientSource>();
 
-        IngredientSource nearest = null;
+        IngredientSource nearestSource = null;
         float closestDistance = pickupRange;
 
         foreach (IngredientSource source in sources)
@@ -60,25 +130,25 @@ public class PlayerIngredientInteractor : MonoBehaviour
 
             if (distance <= closestDistance)
             {
-                nearest = source;
+                nearestSource = source;
                 closestDistance = distance;
             }
         }
 
-        if (nearest == null)
+        if (nearestSource == null)
         {
             Debug.Log("No ingredient nearby!");
             return;
         }
 
-        if (nearest.ingredientPrefab == null)
+        if (nearestSource.ingredientPrefab == null)
         {
             Debug.LogError("Ingredient Prefab missing!");
             return;
         }
 
         heldIngredient = Instantiate(
-            nearest.ingredientPrefab,
+            nearestSource.ingredientPrefab,
             holdPoint,
             false
         );
@@ -89,15 +159,22 @@ public class PlayerIngredientInteractor : MonoBehaviour
         heldIngredient.transform.localRotation =
             Quaternion.identity;
 
-        Collider[] colliders =
-            heldIngredient.GetComponentsInChildren<Collider>();
+        heldIngredient.transform.localScale =
+            Vector3.one;
 
-        foreach (Collider col in colliders)
+        Rigidbody newRb =
+            heldIngredient.GetComponent<Rigidbody>();
+
+        if (newRb != null)
         {
-            col.enabled = false;
+            newRb.isKinematic = true;
+            newRb.velocity = Vector3.zero;
+            newRb.angularVelocity = Vector3.zero;
         }
 
-        Debug.Log("Ingredient picked up!");
+        SetCollidersEnabled(heldIngredient, false);
+
+        Debug.Log("New ingredient created from tray!");
     }
 
     void TryPlace()
@@ -105,80 +182,153 @@ public class PlayerIngredientInteractor : MonoBehaviour
         if (heldIngredient == null)
             return;
 
-        if (placementArea == null)
+        if (holdPoint == null)
         {
-            Debug.LogError("Placement Area is missing!");
+            Debug.LogError("HoldPoint is missing!");
             return;
         }
 
-        if (ingredientStack == null)
+        // Position slightly in front of the player.
+        Vector3 dropPosition =
+            holdPoint.position +
+            transform.forward * dropForwardDistance;
+
+        bool onConveyor = false;
+        Vector3 conveyorPosition = dropPosition;
+
+        if (placementArea != null)
         {
-            Debug.LogError("IngredientStack is missing!");
-            return;
+            Transform area = placementArea.transform;
+
+            Vector3 local =
+                area.InverseTransformPoint(dropPosition);
+
+            Vector3 center = placementArea.center;
+            Vector3 half =
+                placementArea.size * 0.5f;
+
+            // Do not teleport the item onto the belt.
+            bool insideArea =
+                local.x >= center.x - half.x &&
+                local.x <= center.x + half.x &&
+                local.z >= center.z - half.z &&
+                local.z <= center.z + half.z;
+
+            Vector3 playerPos = transform.position;
+            Vector3 targetPos = dropPosition;
+
+            playerPos.y = 0f;
+            targetPos.y = 0f;
+
+            bool withinReach =
+                Vector3.Distance(playerPos, targetPos)
+                <= conveyorReach;
+
+            if (insideArea && withinReach)
+            {
+                onConveyor = true;
+
+                local.y = center.y + half.y;
+
+                conveyorPosition =
+                    area.TransformPoint(local);
+
+                conveyorPosition +=
+                    Vector3.up * 0.05f;
+            }
         }
 
-        // Use the player's hand as the placement reference.
-        Vector3 referencePosition = holdPoint.position;
+        PlacedIngredient marker =
+            heldIngredient.GetComponent<PlacedIngredient>();
 
-        // Convert the hand position to the area's local space.
-        Transform areaTransform = placementArea.transform;
-
-        Vector3 localPoint =
-            areaTransform.InverseTransformPoint(referencePosition);
-
-        Vector3 center = placementArea.center;
-        Vector3 halfSize = placementArea.size * 0.5f;
-
-        // Keep the position within the conveyor area.
-        localPoint.x = Mathf.Clamp(
-            localPoint.x,
-            center.x - halfSize.x,
-            center.x + halfSize.x
-        );
-
-        localPoint.z = Mathf.Clamp(
-            localPoint.z,
-            center.z - halfSize.z,
-            center.z + halfSize.z
-        );
-
-        // Put the ingredient on the top surface.
-        localPoint.y = center.y + halfSize.y;
-
-        Vector3 placePosition =
-            areaTransform.TransformPoint(localPoint);
-
-        // Check distance on the horizontal plane.
-        Vector3 playerPos = transform.position;
-        Vector3 targetPos = placePosition;
-
-        playerPos.y = 0f;
-        targetPos.y = 0f;
-
-        float distance =
-            Vector3.Distance(playerPos, targetPos);
-
-        if (distance > placementRange)
+        if (marker == null)
         {
-            Debug.Log("Move closer to the conveyor!");
-            return;
+            marker =
+                heldIngredient.AddComponent<PlacedIngredient>();
         }
 
-        // Remove the ingredient from the player's hand.
-        heldIngredient.transform.SetParent(
-            ingredientStack,
-            true
-        );
+        // Existing script uses this flag to indicate
+        // that the ingredient can be picked up again.
+        marker.isOnConveyor = true;
 
-        // Place it at the calculated conveyor position.
-        heldIngredient.transform.position =
-            placePosition + Vector3.up * 0.05f;
+        Rigidbody rb =
+            heldIngredient.GetComponent<Rigidbody>();
 
-        heldIngredient.transform.rotation =
-            Quaternion.identity;
+        if (onConveyor)
+        {
+            if (ingredientStack != null)
+            {
+                heldIngredient.transform.SetParent(
+                    ingredientStack, true);
+            }
+            else
+            {
+                heldIngredient.transform.SetParent(null, true);
+            }
+
+            heldIngredient.transform.localScale =
+                Vector3.one * placedIngredientScale;
+
+            heldIngredient.transform.position =
+                conveyorPosition;
+
+            heldIngredient.transform.rotation =
+                Quaternion.identity;
+
+            if (rb != null)
+            {
+                rb.isKinematic = true;
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+
+            SetCollidersEnabled(heldIngredient, true);
+
+            Debug.Log("Ingredient placed on conveyor!");
+        }
+        else
+        {
+            heldIngredient.transform.SetParent(null, true);
+
+            heldIngredient.transform.localScale =
+                Vector3.one * placedIngredientScale;
+
+            heldIngredient.transform.position =
+                dropPosition;
+
+            // Place it horizontally before dropping.
+            heldIngredient.transform.rotation =
+                Quaternion.identity;
+
+            if (rb != null)
+            {
+                rb.isKinematic = true;
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+
+            SetCollidersEnabled(heldIngredient, true);
+
+            if (rb != null)
+            {
+                rb.useGravity = true;
+                rb.isKinematic = false;
+            }
+
+            Debug.Log("Ingredient dropped on floor!");
+        }
 
         heldIngredient = null;
+    }
 
-        Debug.Log("Ingredient placed on conveyor!");
+    void SetCollidersEnabled(GameObject obj, bool enabled)
+    {
+        Collider[] colliders =
+            obj.GetComponentsInChildren<Collider>();
+
+        foreach (Collider col in colliders)
+        {
+            col.enabled = enabled;
+        }
     }
 }

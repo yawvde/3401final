@@ -11019,7 +11019,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 981e9cce413c5164a8daf41bb47ea73c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.957
+      value: 11.58
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 981e9cce413c5164a8daf41bb47ea73c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -15996,10 +15996,14 @@ MonoBehaviour:
   interactKey: 111
   holdPoint: {fileID: 1869366622}
   pickupRange: 10
+  rePickupRange: 3
   ingredientStack: {fileID: 1840291270}
-  placementArea: {fileID: 0}
+  placementArea: {fileID: 1597483573}
   placementRange: 10
   stackHeightStep: 0.2
+  dropForwardDistance: 0.8
+  conveyorReach: 2.5
+  placedIngredientScale: 0.8
 --- !u!1 &1351949173
 GameObject:
   m_ObjectHideFlags: 0
@@ -19609,8 +19613,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1597483572}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.86, y: 3.3, z: 10.44}
-  m_LocalScale: {x: 27, y: 0.2, z: 27}
+  m_LocalPosition: {x: 13.86, y: 3.47, z: 11.49}
+  m_LocalScale: {x: 27, y: 0.2, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -21785,10 +21789,14 @@ MonoBehaviour:
   interactKey: 101
   holdPoint: {fileID: 691432627}
   pickupRange: 10
+  rePickupRange: 3
   ingredientStack: {fileID: 1840291270}
-  placementArea: {fileID: 0}
+  placementArea: {fileID: 1597483573}
   placementRange: 10
   stackHeightStep: 0.2
+  dropForwardDistance: 0.8
+  conveyorReach: 2.5
+  placedIngredientScale: 0.8
 --- !u!1 &1778988184
 GameObject:
   m_ObjectHideFlags: 0
