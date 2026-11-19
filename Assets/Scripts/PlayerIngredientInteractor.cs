@@ -19,9 +19,9 @@ public class PlayerIngredientInteractor : MonoBehaviour
     public float placementRange = 10f;
     public float stackHeightStep = 0.2f;
 
-    [Header("Drop Settings")]
-    public float dropForwardDistance = 0.8f;
-    public float conveyorReach = 2.5f;
+    [Header("Throw Settings")]
+    public float throwForwardSpeed = 5f;
+    public float throwUpSpeed = 5f;
 
     [Header("Ingredient Size")]
     public float placedIngredientScale = 0.8f;
@@ -34,9 +34,13 @@ public class PlayerIngredientInteractor : MonoBehaviour
             return;
 
         if (heldIngredient == null)
+        {
             TryPickup();
+        }
         else
-            TryPlace();
+        {
+            TryThrow();
+        }
     }
 
     void TryPickup()
@@ -47,7 +51,7 @@ public class PlayerIngredientInteractor : MonoBehaviour
             return;
         }
 
-        // First, look for ingredients already placed.
+        // First, look for an existing ingredient.
         PlacedIngredient[] items =
             FindObjectsOfType<PlacedIngredient>();
 
@@ -77,7 +81,7 @@ public class PlayerIngredientInteractor : MonoBehaviour
 
         if (nearestItem != null)
         {
-            // Reuse the existing object.
+            // Reuse the same existing ingredient.
             heldIngredient = nearestItem.gameObject;
             nearestItem.isOnConveyor = false;
 
@@ -102,7 +106,6 @@ public class PlayerIngredientInteractor : MonoBehaviour
             heldIngredient.transform.localRotation =
                 Quaternion.identity;
 
-            // Keep the intended hand-held size.
             heldIngredient.transform.localScale =
                 Vector3.one;
 
@@ -110,7 +113,7 @@ public class PlayerIngredientInteractor : MonoBehaviour
             return;
         }
 
-        // Otherwise create a new ingredient from a tray.
+        // Otherwise create a new ingredient from tray.
         IngredientSource[] sources =
             FindObjectsOfType<IngredientSource>();
 
@@ -130,8 +133,8 @@ public class PlayerIngredientInteractor : MonoBehaviour
 
             if (distance <= closestDistance)
             {
-                nearestSource = source;
                 closestDistance = distance;
+                nearestSource = source;
             }
         }
 
@@ -177,7 +180,7 @@ public class PlayerIngredientInteractor : MonoBehaviour
         Debug.Log("New ingredient created from tray!");
     }
 
-    void TryPlace()
+    void TryThrow()
     {
         if (heldIngredient == null)
             return;
@@ -188,146 +191,97 @@ public class PlayerIngredientInteractor : MonoBehaviour
             return;
         }
 
-        // Position slightly in front of the player.
-        Vector3 dropPosition =
-            holdPoint.position +
-            transform.forward * dropForwardDistance;
+        GameObject item = heldIngredient;
 
-        bool onConveyor = false;
-        Vector3 conveyorPosition = dropPosition;
+        // Release the same object from the hand.
+        item.transform.SetParent(null, true);
 
-        if (placementArea != null)
-        {
-            Transform area = placementArea.transform;
+        // Set its world size.
+        item.transform.localScale =
+            Vector3.one * placedIngredientScale;
 
-            Vector3 local =
-                area.InverseTransformPoint(dropPosition);
+        // Begin the throw at the player's hand.
+        item.transform.position = holdPoint.position;
 
-            Vector3 center = placementArea.center;
-            Vector3 half =
-                placementArea.size * 0.5f;
+        // Keep the ingredient level.
+        item.transform.rotation =
+            Quaternion.identity;
 
-            // Do not teleport the item onto the belt.
-            bool insideArea =
-                local.x >= center.x - half.x &&
-                local.x <= center.x + half.x &&
-                local.z >= center.z - half.z &&
-                local.z <= center.z + half.z;
-
-            Vector3 playerPos = transform.position;
-            Vector3 targetPos = dropPosition;
-
-            playerPos.y = 0f;
-            targetPos.y = 0f;
-
-            bool withinReach =
-                Vector3.Distance(playerPos, targetPos)
-                <= conveyorReach;
-
-            if (insideArea && withinReach)
-            {
-                onConveyor = true;
-
-                local.y = center.y + half.y;
-
-                conveyorPosition =
-                    area.TransformPoint(local);
-
-                conveyorPosition +=
-                    Vector3.up * 0.05f;
-            }
-        }
-
+        // Allow this item to be picked up again.
         PlacedIngredient marker =
-            heldIngredient.GetComponent<PlacedIngredient>();
+            item.GetComponent<PlacedIngredient>();
 
         if (marker == null)
         {
             marker =
-                heldIngredient.AddComponent<PlacedIngredient>();
+                item.AddComponent<PlacedIngredient>();
         }
 
-        // Existing script uses this flag to indicate
-        // that the ingredient can be picked up again.
+        // Existing marker uses this flag for pickup.
         marker.isOnConveyor = true;
 
-        Rigidbody rb =
-            heldIngredient.GetComponent<Rigidbody>();
+        Rigidbody rb = item.GetComponent<Rigidbody>();
 
-        if (onConveyor)
+        if (rb == null)
         {
-            if (ingredientStack != null)
-            {
-                heldIngredient.transform.SetParent(
-                    ingredientStack, true);
-            }
-            else
-            {
-                heldIngredient.transform.SetParent(null, true);
-            }
+            Debug.LogError(
+                "Rigidbody missing on ingredient!"
+            );
 
-            heldIngredient.transform.localScale =
-                Vector3.one * placedIngredientScale;
+            // Keep holding if throwing is impossible.
+            item.transform.SetParent(holdPoint, false);
+            item.transform.localPosition =
+                Vector3.zero;
 
-            heldIngredient.transform.position =
-                conveyorPosition;
-
-            heldIngredient.transform.rotation =
+            item.transform.localRotation =
                 Quaternion.identity;
 
-            if (rb != null)
-            {
-                rb.isKinematic = true;
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
-            }
+            item.transform.localScale =
+                Vector3.one;
 
-            SetCollidersEnabled(heldIngredient, true);
-
-            Debug.Log("Ingredient placed on conveyor!");
+            marker.isOnConveyor = false;
+            return;
         }
-        else
-        {
-            heldIngredient.transform.SetParent(null, true);
 
-            heldIngredient.transform.localScale =
-                Vector3.one * placedIngredientScale;
+        // Reset physics before throwing.
+        rb.isKinematic = true;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
 
-            heldIngredient.transform.position =
-                dropPosition;
+        rb.useGravity = true;
 
-            // Place it horizontally before dropping.
-            heldIngredient.transform.rotation =
-                Quaternion.identity;
+        // Enable collision before applying velocity.
+        SetCollidersEnabled(item, true);
 
-            if (rb != null)
-            {
-                rb.isKinematic = true;
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
-            }
+        // Return the item to physics simulation.
+        rb.isKinematic = false;
 
-            SetCollidersEnabled(heldIngredient, true);
+        Vector3 direction =
+            transform.forward * throwForwardSpeed +
+            Vector3.up * throwUpSpeed;
 
-            if (rb != null)
-            {
-                rb.useGravity = true;
-                rb.isKinematic = false;
-            }
-
-            Debug.Log("Ingredient dropped on floor!");
-        }
+        rb.velocity = direction;
 
         heldIngredient = null;
+
+        Debug.Log("Ingredient thrown!");
     }
 
-    void SetCollidersEnabled(GameObject obj, bool enabled)
+    void SetCollidersEnabled(
+        GameObject obj,
+        bool enabled
+    )
     {
         Collider[] colliders =
             obj.GetComponentsInChildren<Collider>();
 
         foreach (Collider col in colliders)
         {
+            // Do not enable colliders intentionally
+            // disabled in the prefab.
+            if (col is SphereCollider)
+                continue;
+
             col.enabled = enabled;
         }
     }
