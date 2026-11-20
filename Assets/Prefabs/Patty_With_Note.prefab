@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2343463933411671056}
   - component: {fileID: 3300259512551137462}
   - component: {fileID: 437247942733342462}
+  - component: {fileID: 3044482104224311819}
   m_Layer: 0
   m_Name: Patty_With_Note
   m_TagString: Untagged
@@ -64,6 +65,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.5, y: 0.8, z: 2.5}
   m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!114 &3044482104224311819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827184984518207900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81bfe7823a88a644294cd33a1b296161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endPoint: {fileID: 2343463933411671056}
+  moveSpeed: 2
+  IsMoving: 0
 --- !u!1 &4179031729271505492
 GameObject:
   m_ObjectHideFlags: 0

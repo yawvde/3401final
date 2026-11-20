@@ -39,12 +39,16 @@ public class RoundManager : MonoBehaviour
 
 
     private bool isCounting = false;
+    public bool CanRegisterFood
+    {
+        get { return isCounting; }
+    }
 
     private bool isTransporting = false;
 
     private bool waitingForJudgement = false;
 
-    
+
 
 
 
@@ -166,42 +170,42 @@ public class RoundManager : MonoBehaviour
 
 
 
-    // Register food when player places it 
-
+    // Register food when player places it
     public void RegisterFood(ConveyorFoodMover food)
-
     {
-
-        if (food == null) return;
-
-
-
-        if (!isCounting)
-
-        {
-
-            UnityEngine.Debug.LogWarning(
-
-                "Food cannot be registered now!"
-
-            );
-
+        if (food == null)
             return;
 
+        if (!isCounting)
+        {
+            UnityEngine.Debug.LogWarning(
+                "Food cannot be registered now!"
+            );
+            return;
         }
-
-
 
         if (!foods.Contains(food))
-
         {
-
             foods.Add(food);
 
+            UnityEngine.Debug.Log(
+                "Food registered successfully!"
+            );
         }
-
     }
 
+    // Remove food when player picks it up again
+    public void UnregisterFood(ConveyorFoodMover food)
+    {
+        if (food == null)
+            return;
+
+        foods.Remove(food);
+
+        UnityEngine.Debug.Log(
+            "Food removed from transport list!"
+        );
+    }
 
 
     // Start a new round 
@@ -267,7 +271,9 @@ public class RoundManager : MonoBehaviour
 
 
         belt.StartBelt();
-
+        UnityEngine.Debug.Log(
+    "Registered food count: " + foods.Count
+);
 
 
         foreach (ConveyorFoodMover food in foods)
@@ -348,7 +354,7 @@ public class RoundManager : MonoBehaviour
 
     {
 
-        
+
 
 
 

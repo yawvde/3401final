@@ -3203,6 +3203,65 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 289766381}
   m_Mesh: {fileID: -7503184050167564215, guid: 9e5943400e12f034f80c5e905ae89284, type: 3}
+--- !u!1 &293730618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 293730619}
+  - component: {fileID: 293730620}
+  - component: {fileID: 293730621}
+  m_Layer: 0
+  m_Name: FoodPlacementZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &293730619
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293730618}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -13.36, y: 1.8, z: -0.25}
+  m_LocalScale: {x: 21.748112, y: 2.6060874, z: 3.5099366}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1099750456}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &293730620
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293730618}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &293730621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293730618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41bb5a38e4e59c74e8b508a54acf2de9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roundManager: {fileID: 919625884}
 --- !u!1 &295966104
 GameObject:
   m_ObjectHideFlags: 0
@@ -9728,6 +9787,26 @@ Transform:
   m_Father: {fileID: 1387572783}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &844867251 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 581254297115511454, guid: 38fe16417627d4c248c71fac9a8fbd39, type: 3}
+  m_PrefabInstance: {fileID: 4919529862078200032}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &844867256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844867251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81bfe7823a88a644294cd33a1b296161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endPoint: {fileID: 1335794803}
+  moveSpeed: 2
+  IsMoving: 0
 --- !u!1 &847233663
 GameObject:
   m_ObjectHideFlags: 0
@@ -12863,6 +12942,7 @@ Transform:
   - {fileID: 746703561}
   - {fileID: 212787823}
   - {fileID: 1335794803}
+  - {fileID: 293730619}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: -0.922, z: 0}
@@ -15868,6 +15948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb0c5dbe498c34101b6bf2b377a92e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roundManager: {fileID: 919625884}
   interactKey: 111
   holdPoint: {fileID: 1869366622}
   pickupRange: 10
@@ -21661,6 +21742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb0c5dbe498c34101b6bf2b377a92e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roundManager: {fileID: 919625884}
   interactKey: 101
   holdPoint: {fileID: 691432627}
   pickupRange: 10
@@ -23281,6 +23363,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1955499804}
   m_Mesh: {fileID: -6312124002380895898, guid: 9e5943400e12f034f80c5e905ae89284, type: 3}
+--- !u!1 &1959901833 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1827184984518207900, guid: 47e8f34a79aeb46c0b0fa49895e1d41b, type: 3}
+  m_PrefabInstance: {fileID: 7376825114756695774}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1959901837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959901833}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81bfe7823a88a644294cd33a1b296161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endPoint: {fileID: 1335794803}
+  moveSpeed: 2
+  IsMoving: 0
 --- !u!1 &1969510017
 GameObject:
   m_ObjectHideFlags: 0

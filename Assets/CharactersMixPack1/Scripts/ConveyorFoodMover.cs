@@ -21,57 +21,29 @@ public class ConveyorFoodMover : MonoBehaviour
 
 
     void Update()
-
     {
-
-        if (Input.GetKeyDown(KeyCode.Space))
-
-        {
-
-            StartMoving();
-
-        }
-
-
-
         if (!IsMoving || endPoint == null)
-
             return;
 
-
-
         transform.position = Vector3.MoveTowards(
-
             transform.position,
-
             endPoint.position,
-
             moveSpeed * Time.deltaTime
-
         );
 
-
-
         if (Vector3.Distance(
-
             transform.position,
-
             endPoint.position
-
         ) < 0.02f)
-
         {
-
             transform.position = endPoint.position;
 
             IsMoving = false;
 
-
-
-            UnityEngine.Debug.Log("Food reached endpoint!");
-
+            UnityEngine.Debug.Log(
+                "Food reached endpoint!"
+            );
         }
-
     }
 
 

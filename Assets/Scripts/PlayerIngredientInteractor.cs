@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class PlayerIngredientInteractor : MonoBehaviour
 {
+    [Header("Round Manager")]
+    public RoundManager roundManager;
+
     [Header("Interaction Key")]
     public KeyCode interactKey = KeyCode.E;
 
@@ -84,6 +87,15 @@ public class PlayerIngredientInteractor : MonoBehaviour
             // Reuse the same existing ingredient.
             heldIngredient = nearestItem.gameObject;
             nearestItem.isOnConveyor = false;
+
+            ConveyorFoodMover mover =
+                heldIngredient.GetComponent<ConveyorFoodMover>();
+
+            if (roundManager != null && mover != null)
+            {
+                roundManager.UnregisterFood(mover);
+                mover.StopMoving();
+            }
 
             Rigidbody rb =
                 heldIngredient.GetComponent<Rigidbody>();
