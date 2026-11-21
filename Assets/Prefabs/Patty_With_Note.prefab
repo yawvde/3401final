@@ -195,6 +195,7 @@ GameObject:
   - component: {fileID: 3707461306267694105}
   - component: {fileID: 6413869341777116285}
   - component: {fileID: 7432488674266680479}
+  - component: {fileID: 5059446053339420357}
   m_Layer: 0
   m_Name: Patty_With_Note
   m_TagString: Untagged
@@ -276,3 +277,16 @@ MonoBehaviour:
   endPoint: {fileID: 0}
   moveSpeed: 2
   IsMoving: 0
+--- !u!114 &5059446053339420357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7476854611984887390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfd1b54166984bb4f9170d00b2381668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noteId: Eighth

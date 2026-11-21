@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5954690082141247782}
   - component: {fileID: 4094448613107814722}
   - component: {fileID: 501379978169038429}
+  - component: {fileID: 1449394890473685792}
   m_Layer: 0
   m_Name: Onion_Burger_Parts_0
   m_TagString: Untagged
@@ -95,6 +96,19 @@ MonoBehaviour:
   endPoint: {fileID: 0}
   moveSpeed: 2
   IsMoving: 0
+--- !u!114 &1449394890473685792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073059419306334164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfd1b54166984bb4f9170d00b2381668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noteId: Dotted Half
 --- !u!1 &2021048674141245782
 GameObject:
   m_ObjectHideFlags: 0

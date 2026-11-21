@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9062668415013329666}
   - component: {fileID: 1708052474913772390}
   - component: {fileID: 2995770696684890632}
+  - component: {fileID: -7989649815283339761}
   m_Layer: 0
   m_Name: Lettuce_With_Note
   m_TagString: Untagged
@@ -94,6 +95,19 @@ MonoBehaviour:
   endPoint: {fileID: 0}
   moveSpeed: 2
   IsMoving: 0
+--- !u!114 &-7989649815283339761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414521107600348656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfd1b54166984bb4f9170d00b2381668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noteId: Two Eighth
 --- !u!1 &6146943954701853494
 GameObject:
   m_ObjectHideFlags: 0
