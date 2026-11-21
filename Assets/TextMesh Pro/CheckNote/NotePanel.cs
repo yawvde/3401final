@@ -3,61 +3,129 @@ using UnityEngine.Events;
 
 public class NotePanel : MonoBehaviour
 {
-    [Header("当前关卡目标音符")]
-    [SerializeField]
-    private NoteType[] targetNotes;
-
-    [Header("匹配完成事件")]
+    [Header("Match Event")]
     public UnityEvent onAllNotesMatched;
 
-    private int currentIndex = 0;
-    
-    public NoteType GetTargetNote(int index)
-    {
-        if (index < 0 || index >= targetNotes.Length)
-            return NoteType.Note1;
+    [Header("Current Round (0 = Round 1)")]
+    [SerializeField] private int currentRound = 0;
 
-        return targetNotes[index];
+    private int currentIndex = 0;
+
+    // Six fixed correct answers.
+    private readonly NoteType[][] roundAnswers =
+    {
+        // Round 1: Omelet Omelet Patty Patty Omelet
+        new NoteType[]
+        {
+            NoteType.Note5, NoteType.Note5,
+            NoteType.Note7, NoteType.Note7,
+            NoteType.Note5
+        },
+
+        // Round 2: Patty Patty Omelet Tomato Patty
+        new NoteType[]
+        {
+            NoteType.Note7, NoteType.Note7,
+            NoteType.Note5, NoteType.Note8,
+            NoteType.Note7
+        },
+
+        // Round 3
+        new NoteType[]
+        {
+            NoteType.Note7, NoteType.Note2,
+            NoteType.Note7, NoteType.Note5,
+            NoteType.Note2, NoteType.Note4,
+            NoteType.Note3, NoteType.Note8,
+            NoteType.Note8
+        },
+
+        // Round 4
+        new NoteType[]
+        {
+            NoteType.Note1, NoteType.Note2,
+            NoteType.Note7, NoteType.Note4,
+            NoteType.Note1
+        },
+
+        // Round 5
+        new NoteType[]
+        {
+            NoteType.Note8, NoteType.Note5,
+            NoteType.Note2, NoteType.Note3,
+            NoteType.Note7, NoteType.Note7,
+            NoteType.Note7, NoteType.Note7,
+            NoteType.Note7, NoteType.Note5,
+            NoteType.Note4, NoteType.Note7
+        },
+
+        // Round 6
+        new NoteType[]
+        {
+            NoteType.Note4, NoteType.Note4,
+            NoteType.Note8, NoteType.Note7,
+            NoteType.Note7, NoteType.Note6,
+            NoteType.Note7
+        }
+    };
+
+    public void SetRound(int roundIndex)
+    {
+        if (roundIndex < 0 ||
+            roundIndex >= roundAnswers.Length)
+        {
+            UnityEngine.Debug.LogError(
+                "Invalid round: " + roundIndex
+            );
+            return;
+        }
+
+        currentRound = roundIndex;
+        currentIndex = 0;
+
+        UnityEngine.Debug.Log(
+            "NotePanel: Round " + (currentRound + 1) +
+            " | Required Notes: " + TotalNotes
+        );
     }
 
-    /// <summary>
-    /// 检测音符是否符合当前目标
-    /// </summary>
+    public NoteType GetTargetNote(int index)
+    {
+        if (index < 0 || index >= TotalNotes)
+            return NoteType.Note1;
+
+        return roundAnswers[currentRound][index];
+    }
+
+    // Compatibility with the existing system.
     public bool CheckNote(NoteType note)
     {
-        if (currentIndex >= targetNotes.Length)
+        if (currentIndex >= TotalNotes)
             return false;
 
-        if (targetNotes[currentIndex] != note)
-        {
-            Debug.Log($"音符错误，当前需要：{targetNotes[currentIndex]}，实际为：{note}");
+        if (GetTargetNote(currentIndex) != note)
             return false;
-        }
 
         currentIndex++;
 
-        Debug.Log($"音符匹配成功：{note}，进度：{currentIndex}/{targetNotes.Length}");
-
-        if (currentIndex >= targetNotes.Length)
-        {
-            Debug.Log("全部音符匹配完成！");
+        if (currentIndex >= TotalNotes)
             onAllNotesMatched?.Invoke();
-        }
 
         return true;
     }
 
-    /// <summary>
-    /// 重置当前关卡音符进度
-    /// </summary>
     public void ResetNotes()
     {
         currentIndex = 0;
     }
 
+    public int CurrentRound => currentRound;
+
+    public int TotalNotes =>
+        roundAnswers[currentRound].Length;
+
     public int CurrentIndex => currentIndex;
 
-    public int TotalNotes => targetNotes.Length;
-
-    public bool IsCompleted => currentIndex >= targetNotes.Length;
+    public bool IsCompleted =>
+        currentIndex >= TotalNotes;
 }

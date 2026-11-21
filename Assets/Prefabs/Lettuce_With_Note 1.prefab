@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfd1b54166984bb4f9170d00b2381668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteId: Eighth-note triplet
+  noteType: 4
 --- !u!1 &3060455034255853378
 GameObject:
   m_ObjectHideFlags: 0

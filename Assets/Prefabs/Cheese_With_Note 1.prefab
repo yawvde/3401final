@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfd1b54166984bb4f9170d00b2381668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteId: Quarter Rest
+  noteType: 3
 --- !u!1 &5879189891395815278
 GameObject:
   m_ObjectHideFlags: 0
