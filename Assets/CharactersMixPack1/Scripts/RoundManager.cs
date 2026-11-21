@@ -260,6 +260,8 @@ public class RoundManager : MonoBehaviour
         waitingForJudgement = false;
 
         currentRound++;
+        
+        NoteTrigger.Instance.HasChecked = false;
 
         if (currentRound >= roundTimes.Length)
         {

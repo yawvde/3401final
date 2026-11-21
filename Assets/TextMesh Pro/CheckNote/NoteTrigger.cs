@@ -16,8 +16,12 @@ public class NoteTrigger : MonoBehaviour
     [Header("检测结果事件")]
     public UnityEvent onSuccess;
     public UnityEvent onFail;
-    
-    public bool HasChecked => hasChecked;
+
+    public bool HasChecked
+    {
+        get => hasChecked;
+        set => hasChecked = value;
+    }
     private bool hasChecked = false;
 
     // 本轮已经检测过的食材，避免重复计数
