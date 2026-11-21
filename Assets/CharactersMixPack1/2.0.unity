@@ -8712,7 +8712,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 981e9cce413c5164a8daf41bb47ea73c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 17.919
+      value: 5.48
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 981e9cce413c5164a8daf41bb47ea73c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -14495,7 +14495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 981e9cce413c5164a8daf41bb47ea73c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.9597
+      value: 18.6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 981e9cce413c5164a8daf41bb47ea73c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -20788,11 +20788,11 @@ MonoBehaviour:
   heldLocalScale: 2
   sourcePickupRange: 3.5
   droppedPickupRange: 2.5
-  throwForwardSpeed: 2
-  throwUpSpeed: 7
-  throwStartForward: 0.7
-  throwStartUp: 0.4
-  thrownWorldScale: 0.8
+  throwForwardSpeed: 3.5
+  throwUpSpeed: 5
+  throwStartForward: 0.6
+  throwStartUp: 0.9
+  thrownWorldScale: 0.3
 --- !u!114 &1336977652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28897,11 +28897,11 @@ MonoBehaviour:
   heldLocalScale: 1
   sourcePickupRange: 3.5
   droppedPickupRange: 2.5
-  throwForwardSpeed: 2
-  throwUpSpeed: 7
-  throwStartForward: 0.7
-  throwStartUp: 0.4
-  thrownWorldScale: 0.8
+  throwForwardSpeed: 3.5
+  throwUpSpeed: 5
+  throwStartForward: 0.6
+  throwStartUp: 0.9
+  thrownWorldScale: 0.3
 --- !u!114 &1772900321
 MonoBehaviour:
   m_ObjectHideFlags: 0
