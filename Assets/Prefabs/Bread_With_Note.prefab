@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6077059572546880620}
   - component: {fileID: 4478589305454365704}
   - component: {fileID: -872744388979039409}
+  - component: {fileID: 2589000885026672708}
   m_Layer: 0
   m_Name: Bread_With_Note
   m_TagString: Untagged
@@ -94,6 +95,19 @@ MonoBehaviour:
   endPoint: {fileID: 0}
   moveSpeed: 2
   IsMoving: 0
+--- !u!114 &2589000885026672708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581254297115511454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfd1b54166984bb4f9170d00b2381668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noteId: Half
 --- !u!1 &4267535865177510145
 GameObject:
   m_ObjectHideFlags: 0
