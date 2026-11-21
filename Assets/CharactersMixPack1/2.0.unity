@@ -4222,8 +4222,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 293730618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.36, y: 1.8, z: -0.25}
-  m_LocalScale: {x: 21.748112, y: 2.6060874, z: 3.5099366}
+  m_LocalPosition: {x: -13.36, y: 1.34, z: -0.3}
+  m_LocalScale: {x: 21.748112, y: 2.6060874, z: 3.879182}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1099750456}
@@ -20789,10 +20789,10 @@ MonoBehaviour:
   sourcePickupRange: 3.5
   droppedPickupRange: 2.5
   throwForwardSpeed: 3.5
-  throwUpSpeed: 5
+  throwUpSpeed: 8
   throwStartForward: 0.6
   throwStartUp: 0.9
-  thrownWorldScale: 0.3
+  thrownWorldScale: 0.7
 --- !u!114 &1336977652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28898,10 +28898,10 @@ MonoBehaviour:
   sourcePickupRange: 3.5
   droppedPickupRange: 2.5
   throwForwardSpeed: 3.5
-  throwUpSpeed: 5
+  throwUpSpeed: 8
   throwStartForward: 0.6
   throwStartUp: 0.9
-  thrownWorldScale: 0.3
+  thrownWorldScale: 0.7
 --- !u!114 &1772900321
 MonoBehaviour:
   m_ObjectHideFlags: 0
