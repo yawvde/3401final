@@ -5,33 +5,79 @@ public class FoodPlacementZone : MonoBehaviour
     [Header("Round Manager")]
     public RoundManager roundManager;
 
-    // Detect food inside conveyor area
+    [Header("Debug")]
+    public bool showDebug = true;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        TryRegisterFood(other);
+    }
+
     private void OnTriggerStay(Collider other)
+    {
+        TryRegisterFood(other);
+    }
+
+    private void TryRegisterFood(Collider other)
     {
         if (roundManager == null)
             return;
+
         if (!roundManager.CanRegisterFood)
             return;
 
-        // Find ingredient marker
-        PlacedIngredient marker =
-            other.GetComponentInParent<PlacedIngredient>();
+        // Find the Rigidbody that owns this collider.
+        Rigidbody rb = other.attachedRigidbody;
 
-        if (marker == null)
+        if (rb == null)
             return;
 
-        // Only accept ingredients released by player
-        if (!marker.isOnConveyor)
+        // Only accept released, physics-driven food.
+        // Food still held by the player is kinematic.
+        if (rb.isKinematic)
             return;
 
-        // Find food movement script
+        GameObject foodObject = rb.gameObject;
+
+        // Find movement component.
         ConveyorFoodMover mover =
-            marker.GetComponent<ConveyorFoodMover>();
+            foodObject.GetComponent<ConveyorFoodMover>();
 
         if (mover == null)
+        {
+            mover =
+                foodObject.GetComponentInChildren
+                    <ConveyorFoodMover>(true);
+        }
+
+        if (mover == null)
+        {
+            if (showDebug)
+            {
+                UnityEngine.Debug.LogWarning(
+                    "ZONE: Food mover missing on " +
+                    foodObject.name
+                );
+            }
+
+            return;
+        }
+
+        // Check the ingredient marker if available.
+        PlacedIngredient marker =
+            foodObject.GetComponent<PlacedIngredient>();
+
+        if (marker == null)
+        {
+            marker =
+                foodObject.GetComponentInChildren
+                    <PlacedIngredient>(true);
+        }
+
+        if (marker != null && !marker.isOnConveyor)
             return;
 
-        // Register food to RoundManager
+        // Register only during the preparation phase.
         roundManager.RegisterFood(mover);
     }
 }

@@ -1,10 +1,14 @@
 
+using System.Diagnostics;
 using UnityEngine;
 
 public class PlayerIngredientInteractor : MonoBehaviour
 {
     [Header("Round Manager")]
     public RoundManager roundManager;
+
+    [Header("Conveyor Endpoint")]
+    public Transform conveyorEndPoint;
 
     [Header("Interaction Key")]
     public KeyCode interactKey = KeyCode.E;
@@ -50,7 +54,7 @@ public class PlayerIngredientInteractor : MonoBehaviour
     {
         if (holdPoint == null)
         {
-            Debug.LogError("HoldPoint is missing!");
+            UnityEngine.Debug.LogError("HoldPoint is missing!");
             return;
         }
 
@@ -121,7 +125,7 @@ public class PlayerIngredientInteractor : MonoBehaviour
             heldIngredient.transform.localScale =
                 Vector3.one;
 
-            Debug.Log("Existing ingredient picked up!");
+            UnityEngine.Debug.Log("Existing ingredient picked up!");
             return;
         }
 
@@ -152,13 +156,13 @@ public class PlayerIngredientInteractor : MonoBehaviour
 
         if (nearestSource == null)
         {
-            Debug.Log("No ingredient nearby!");
+            UnityEngine.Debug.Log("No ingredient nearby!");
             return;
         }
 
         if (nearestSource.ingredientPrefab == null)
         {
-            Debug.LogError("Ingredient Prefab missing!");
+            UnityEngine.Debug.LogError("Ingredient Prefab missing!");
             return;
         }
 
@@ -167,6 +171,36 @@ public class PlayerIngredientInteractor : MonoBehaviour
             holdPoint,
             false
         );
+
+        ConveyorFoodMover newMover =
+    heldIngredient.GetComponent<ConveyorFoodMover>();
+
+        if (newMover == null)
+        {
+            newMover =
+                heldIngredient.GetComponentInChildren<ConveyorFoodMover>(true);
+        }
+
+        if (newMover != null)
+        {
+            newMover.endPoint = conveyorEndPoint;
+            newMover.StopMoving();
+
+            UnityEngine.Debug.Log(
+                "CLONE CREATED: " + heldIngredient.name +
+                " | Endpoint: " +
+                (newMover.endPoint == null
+                    ? "NONE"
+                    : newMover.endPoint.name)
+            );
+        }
+        else
+        {
+            UnityEngine.Debug.LogError(
+                heldIngredient.name +
+                " has no ConveyorFoodMover!"
+            );
+        }
 
         heldIngredient.transform.localPosition =
             Vector3.zero;
@@ -189,7 +223,7 @@ public class PlayerIngredientInteractor : MonoBehaviour
 
         SetCollidersEnabled(heldIngredient, false);
 
-        Debug.Log("New ingredient created from tray!");
+        UnityEngine.Debug.Log("New ingredient created from tray!");
     }
 
     void TryThrow()
@@ -199,7 +233,7 @@ public class PlayerIngredientInteractor : MonoBehaviour
 
         if (holdPoint == null)
         {
-            Debug.LogError("HoldPoint is missing!");
+            UnityEngine.Debug.LogError("HoldPoint is missing!");
             return;
         }
 
@@ -236,7 +270,7 @@ public class PlayerIngredientInteractor : MonoBehaviour
 
         if (rb == null)
         {
-            Debug.LogError(
+            UnityEngine.Debug.LogError(
                 "Rigidbody missing on ingredient!"
             );
 
@@ -274,9 +308,66 @@ public class PlayerIngredientInteractor : MonoBehaviour
 
         rb.velocity = direction;
 
+        // Prepare the thrown ingredient for conveyor movement.
+        rb.velocity = direction;
+
+        // Find or add the movement component.
+        ConveyorFoodMover foodMover =
+            item.GetComponent<ConveyorFoodMover>();
+
+        if (foodMover == null)
+        {
+            foodMover = item.AddComponent<ConveyorFoodMover>();
+        }
+
+        // Assign the destination from the player or GameManager.
+        if (roundManager != null && roundManager.foodEndPoint != null)
+        {
+            foodMover.endPoint = roundManager.foodEndPoint;
+        }
+        else
+        {
+            foodMover.endPoint = conveyorEndPoint;
+        }
+
+        foodMover.enabled = true;
+        foodMover.StopMoving();
+
+        // Check whether this throw is aimed at the placement area.
+        bool aimedAtConveyor = false;
+
+        if (placementArea != null)
+        {
+            RaycastHit hit;
+            Vector3 rayStart = item.transform.position;
+
+            if (Physics.Raycast(
+                rayStart,
+                direction.normalized,
+                out hit,
+                20f))
+            {
+                aimedAtConveyor =
+                    hit.collider == placementArea;
+            }
+        }
+
+        UnityEngine.Debug.Log(
+            "THROWN FOOD: " + item.name +
+            " | Endpoint: " +
+            (foodMover.endPoint != null
+                ? foodMover.endPoint.name
+                : "NONE")
+        );
+
+        // Keep the original code below.
         heldIngredient = null;
 
-        Debug.Log("Ingredient thrown!");
+        UnityEngine.Debug.Log("Ingredient thrown!");
+
+        heldIngredient = null;
+
+        UnityEngine.Debug.Log("Ingredient thrown!");
     }
 
     void SetCollidersEnabled(
