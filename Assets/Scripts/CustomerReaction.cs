@@ -7,9 +7,11 @@ public class CustomerReaction : MonoBehaviour
     [Header("Character Models")]
     public GameObject moleRat;
     public GameObject skeletonMage;
+    public Animator moleRatAnimator;
 
-    [Header("Success Effect")]
+    [Header("Success Effects")]
     public ParticleSystem successFireworks;
+    public ParticleSystem yellowFireworks;
 
     [Header("Settings")]
     public float failDuration = 2f;
@@ -29,13 +31,13 @@ public class CustomerReaction : MonoBehaviour
         if (!enableKeyboardTest)
             return;
 
-        // Press 1 to simulate a correct burger
+        // Press 1: Correct burger
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             OnBurgerSuccess();
         }
 
-        // Press 2 to simulate an incorrect burger
+        // Press 2: Wrong burger
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             OnBurgerFail();
@@ -55,9 +57,24 @@ public class CustomerReaction : MonoBehaviour
     {
         Debug.Log("Burger Correct!");
 
+        // Play Mole Rat happy animation
+        if (moleRatAnimator != null &&
+            moleRat != null &&
+            moleRat.activeInHierarchy)
+        {
+            moleRatAnimator.SetTrigger("Success");
+        }
+
+        // Blue fireworks
         if (successFireworks != null)
         {
             successFireworks.Play();
+        }
+
+        // Yellow fireworks
+        if (yellowFireworks != null)
+        {
+            yellowFireworks.Play();
         }
     }
 
