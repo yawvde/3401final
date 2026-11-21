@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class RoundManager : MonoBehaviour
 {
+    public static bool AllArrived;
     [Header("Conveyor Settings")]
     public ConveyorPieceLoop belt;
 
@@ -100,19 +101,20 @@ public class RoundManager : MonoBehaviour
             !transportingEmpty &&
             foods.Count > 0)
         {
-            bool allArrived = true;
+             AllArrived = true;
 
             foreach (ConveyorFoodMover food in foods)
             {
                 if (food == null || !food.HasReachedEnd)
                 {
-                    allArrived = false;
+                    AllArrived = false;
                     break;
                 }
             }
 
-            if (allArrived)
+            if (AllArrived)
             {
+                NoteTrigger.Instance.CheckResult();
                 FinishTransport(
                     "All food reached EndPoint!"
                 );

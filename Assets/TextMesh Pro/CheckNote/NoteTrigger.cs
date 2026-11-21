@@ -1,10 +1,12 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class NoteTrigger : MonoBehaviour
 {
+    public static NoteTrigger Instance;
     [Header("音符配置面板")]
     [SerializeField] private NotePanel notePanel;
     [SerializeField]  private CustomerReaction customerReaction;
@@ -14,6 +16,9 @@ public class NoteTrigger : MonoBehaviour
     [Header("检测结果事件")]
     public UnityEvent onSuccess;
     public UnityEvent onFail;
+    
+    public bool HasChecked => hasChecked;
+    private bool hasChecked = false;
 
     // 本轮已经检测过的食材，避免重复计数
     private HashSet<RhythmIngredientNote> detectedFoods = new HashSet<RhythmIngredientNote>();
@@ -25,6 +30,7 @@ public class NoteTrigger : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         GetComponent<Collider>().isTrigger = true;
         requiredCount = notePanel.TotalNotes;
     }
@@ -46,17 +52,20 @@ public class NoteTrigger : MonoBehaviour
         collectedNotes.Add(foodNote.noteType);
 
         Debug.Log($"检测到音符：{foodNote.noteType}，进度：{collectedNotes.Count}/{requiredCount}");
-
+        
         // 所有食材检测完毕后统一判断
         if (collectedNotes.Count >= requiredCount)
         {
+            Debug.Log("All notes checked!");
             CheckResult();
         }
     }
 
-    private void CheckResult()
+    public void CheckResult()
     {
         isFinished = true;
+        if (hasChecked)
+            return;
 
         bool isSuccess = true;
 
@@ -95,6 +104,7 @@ public class NoteTrigger : MonoBehaviour
             onFail?.Invoke();
             customerReaction.OnBurgerFail();
         }
+        hasChecked = true;
     }
 
     // 获取目标音符
