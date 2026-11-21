@@ -11,6 +11,14 @@ public class NotePanel : MonoBehaviour
     public UnityEvent onAllNotesMatched;
 
     private int currentIndex = 0;
+    
+    public NoteType GetTargetNote(int index)
+    {
+        if (index < 0 || index >= targetNotes.Length)
+            return NoteType.Note1;
+
+        return targetNotes[index];
+    }
 
     /// <summary>
     /// 检测音符是否符合当前目标

@@ -17955,6 +17955,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notePanel: {fileID: 498915294}
+  customerReaction: {fileID: 1107670711}
+  requiredCount: 5
+  onSuccess:
+    m_PersistentCalls:
+      m_Calls: []
+  onFail:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &1143827558
 BoxCollider:
   m_ObjectHideFlags: 0
