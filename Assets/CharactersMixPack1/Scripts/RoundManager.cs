@@ -6,6 +6,13 @@ public class RoundManager : MonoBehaviour
 {
     public static bool AllArrived;
 
+
+    [Header("Eva UI Integration")]
+    public EvaUIBridge evaUIBridge;
+
+    [Header("Round Card UI")]
+    public RoundCardDisplay roundCardDisplay;
+
     [Header("Conveyor Settings")]
     public ConveyorPieceLoop belt;
 
@@ -88,16 +95,23 @@ public class RoundManager : MonoBehaviour
     private void Update()
     {
         // Preparation countdown
+
         if (isCounting)
         {
             remainingTime -= Time.deltaTime;
+            remainingTime = Mathf.Max(0f, remainingTime);
+
+            if (evaUIBridge != null)
+            {
+                evaUIBridge.UpdateRemainingTime(remainingTime);
+            }
 
             if (remainingTime <= 0f)
             {
-                remainingTime = 0f;
                 StartTransport();
             }
         }
+
 
         // Empty conveyor
         if (isTransporting && transportingEmpty)
@@ -185,6 +199,16 @@ public class RoundManager : MonoBehaviour
         belt.StopBelt();
 
         remainingTime = roundTimes[currentRound];
+        if (roundCardDisplay != null)
+        {
+            roundCardDisplay.ShowRound(currentRound + 1);
+        }
+
+        if (evaUIBridge != null)
+        {
+            evaUIBridge.BeginRound(remainingTime);
+        }
+
 
         // Load the correct answer for this round.
         if (NoteTrigger.Instance != null)
@@ -205,6 +229,12 @@ public class RoundManager : MonoBehaviour
         isCounting = false;
         isTransporting = true;
         AllArrived = false;
+
+        if (evaUIBridge != null)
+        {
+            evaUIBridge.BeginChecking();
+        }
+
 
         UnityEngine.Debug.Log(
             "Registered food count: " + foods.Count
@@ -316,6 +346,12 @@ public class RoundManager : MonoBehaviour
 
         foods.Clear();
 
+        if (evaUIBridge != null && evaUIBridge.IsGameOver)
+        {
+            FinishGame();
+            return;
+        }
+
         currentRound++;
 
         if (currentRound >= roundTimes.Length)
@@ -341,5 +377,10 @@ public class RoundManager : MonoBehaviour
             belt.StopBelt();
 
         UnityEngine.Debug.Log("GAME FINISHED!");
+
+        if (evaUIBridge != null)
+        {
+            evaUIBridge.FinishGame();
+        }
     }
 }

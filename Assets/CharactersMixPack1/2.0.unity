@@ -1236,7 +1236,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 446017168, guid: ac8f27b32233ce34f93a3a9948483f04, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 582935001, guid: ac8f27b32233ce34f93a3a9948483f04, type: 3}
       propertyPath: timerUI
@@ -14406,6 +14406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c2d66fda3223f41a174f37a625e4fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  evaUIBridge: {fileID: 1691546425}
+  roundCardDisplay: {fileID: 1481318353}
   belt: {fileID: 894512621}
   foodEndPoint: {fileID: 1335794803}
   roundTimes:
@@ -18196,6 +18198,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1691546425}
+        m_TargetAssemblyTypeName: EvaUIBridge, Assembly-CSharp
+        m_MethodName: ResolveRound
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onFail:
     m_PersistentCalls:
       m_Calls:
@@ -18203,6 +18217,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
         m_MethodName: Play
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1691546425}
+        m_TargetAssemblyTypeName: EvaUIBridge, Assembly-CSharp
+        m_MethodName: ResolveRound
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -24131,7 +24157,7 @@ MonoBehaviour:
   - {fileID: 567935205}
   - {fileID: 903978800}
   - {fileID: 1285532582}
-  enableKeyboardTest: 1
+  enableKeyboardTest: 0
 --- !u!114 &1481318354
 MonoBehaviour:
   m_ObjectHideFlags: 0

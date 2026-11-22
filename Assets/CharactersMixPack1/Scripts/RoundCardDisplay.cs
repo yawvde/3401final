@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class RoundCardDisplay : MonoBehaviour
@@ -6,16 +7,16 @@ public class RoundCardDisplay : MonoBehaviour
     public GameObject[] roundPanels = new GameObject[6];
 
     [Header("Testing")]
-    public bool enableKeyboardTest = true;
+    public bool enableKeyboardTest = false;
 
     private int currentRound = 1;
 
-    void Start()
+    private void Start()
     {
         ShowRound(1);
     }
 
-    void Update()
+    private void Update()
     {
         if (!enableKeyboardTest)
             return;
@@ -30,9 +31,12 @@ public class RoundCardDisplay : MonoBehaviour
 
     public void ShowRound(int roundNumber)
     {
-        if (roundNumber < 1 || roundNumber > roundPanels.Length)
+        if (roundNumber < 1 ||
+            roundNumber > roundPanels.Length)
         {
-            UnityEngine.Debug.LogWarning("Invalid round number: " + roundNumber);
+            UnityEngine.Debug.LogWarning(
+                "Invalid round number: " + roundNumber
+            );
             return;
         }
 
@@ -41,9 +45,15 @@ public class RoundCardDisplay : MonoBehaviour
         for (int i = 0; i < roundPanels.Length; i++)
         {
             if (roundPanels[i] != null)
-                roundPanels[i].SetActive(i == roundNumber - 1);
+            {
+                roundPanels[i].SetActive(
+                    i == roundNumber - 1
+                );
+            }
         }
 
-        UnityEngine.Debug.Log("Showing round cards: " + currentRound);
+        UnityEngine.Debug.Log(
+            "Showing round cards: " + currentRound
+        );
     }
 }
