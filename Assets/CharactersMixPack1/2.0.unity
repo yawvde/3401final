@@ -542,6 +542,7 @@ GameObject:
   - component: {fileID: 52616026}
   - component: {fileID: 52616025}
   - component: {fileID: 52616024}
+  - component: {fileID: 52616027}
   m_Layer: 0
   m_Name: "\u5C01\u9876_2_19"
   m_TagString: Untagged
@@ -614,6 +615,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 41
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -180}
+--- !u!65 &52616027
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52616023}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 12.68517, y: 13.70127, z: 0.0000050248773}
+  m_Center: {x: -1.3755587e-24, y: -0.00000003874856, z: -0.25000003}
 --- !u!1 &64444539
 GameObject:
   m_ObjectHideFlags: 0
@@ -2412,7 +2426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7427c73d6394460a4a7fe9061dc67e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredientPrefab: {fileID: 5864436730756424023, guid: 8a92949a23d904d2db965c74d581b19c, type: 3}
+  ingredientPrefab: {fileID: 3152592455789234783, guid: e1ab88a3b81327141a021548850b03cb, type: 3}
 --- !u!4 &150542961
 Transform:
   m_ObjectHideFlags: 0
@@ -6382,7 +6396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7427c73d6394460a4a7fe9061dc67e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredientPrefab: {fileID: 1552215167507367249, guid: d119ac938805e476781e0f472cc61f06, type: 3}
+  ingredientPrefab: {fileID: 3333980900491792595, guid: 7e4052e7d0597ea45a9ea4b50ad42a58, type: 3}
 --- !u!4 &408744558
 Transform:
   m_ObjectHideFlags: 0
@@ -14815,13 +14829,14 @@ MonoBehaviour:
   roundCardDisplay: {fileID: 1481318353}
   belt: {fileID: 894512621}
   foodEndPoint: {fileID: 1335794803}
+  beltFoodArea: {fileID: 1321292001}
   roundTimes:
   - 30
+  - 35
   - 40
+  - 15
   - 60
-  - 20
-  - 30
-  - 30
+  - 45
   currentRound: 0
   remainingTime: 0
   emptyTransportDuration: 3
@@ -17744,6 +17759,7 @@ Transform:
   - {fileID: 212787823}
   - {fileID: 1335794803}
   - {fileID: 293730619}
+  - {fileID: 1321292002}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: -0.922, z: 0}
@@ -21555,6 +21571,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1308321476}
   m_Mesh: {fileID: -6319934845576820701, guid: 9e5943400e12f034f80c5e905ae89284, type: 3}
+--- !u!1 &1321292000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1321292002}
+  - component: {fileID: 1321292001}
+  m_Layer: 0
+  m_Name: BeltFoodArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1321292001
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321292000}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1321292002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321292000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -11.38, y: 1.17, z: -0.31}
+  m_LocalScale: {x: 30, y: 4, z: 4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1099750456}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1333147528
 GameObject:
   m_ObjectHideFlags: 0
@@ -21882,7 +21943,7 @@ MonoBehaviour:
   conveyorEndPoint: {fileID: 1335794803}
   interactKey: 101
   holdPoint: {fileID: 0}
-  pickupRange: 10
+  pickupRange: 13
   rePickupRange: 3
   ingredientStack: {fileID: 0}
   placementArea: {fileID: 0}
@@ -30174,7 +30235,7 @@ MonoBehaviour:
   conveyorEndPoint: {fileID: 1335794803}
   interactKey: 101
   holdPoint: {fileID: 0}
-  pickupRange: 10
+  pickupRange: 13
   rePickupRange: 3
   ingredientStack: {fileID: 0}
   placementArea: {fileID: 293730620}
@@ -37417,6 +37478,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5320139570346577364, guid: e1ab88a3b81327141a021548850b03cb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5320139570346577364, guid: e1ab88a3b81327141a021548850b03cb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.71
+      objectReference: {fileID: 0}
     - target: {fileID: 6484450534453296798, guid: e1ab88a3b81327141a021548850b03cb, type: 3}
       propertyPath: endPoint
       value: 
@@ -39304,11 +39373,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3234714481873945454, guid: 7e4052e7d0597ea45a9ea4b50ad42a58, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 3.05
       objectReference: {fileID: 0}
     - target: {fileID: 3234714481873945454, guid: 7e4052e7d0597ea45a9ea4b50ad42a58, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23
+      value: 23.35
       objectReference: {fileID: 0}
     - target: {fileID: 3234714481873945454, guid: 7e4052e7d0597ea45a9ea4b50ad42a58, type: 3}
       propertyPath: m_LocalRotation.w
@@ -39320,15 +39389,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3234714481873945454, guid: 7e4052e7d0597ea45a9ea4b50ad42a58, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.9548719
+      value: 0.94869184
       objectReference: {fileID: 0}
     - target: {fileID: 3234714481873945454, guid: 7e4052e7d0597ea45a9ea4b50ad42a58, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.29701805
+      value: -0.31620237
       objectReference: {fileID: 0}
     - target: {fileID: 3234714481873945454, guid: 7e4052e7d0597ea45a9ea4b50ad42a58, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 34.557
+      value: 36.867
       objectReference: {fileID: 0}
     - target: {fileID: 3234714481873945454, guid: 7e4052e7d0597ea45a9ea4b50ad42a58, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
