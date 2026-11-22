@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,7 +6,6 @@ using System.Collections.Generic;
 public class RoundManager : MonoBehaviour
 {
     public static bool AllArrived;
-
 
     [Header("Eva UI Integration")]
     public EvaUIBridge evaUIBridge;
@@ -18,6 +18,9 @@ public class RoundManager : MonoBehaviour
 
     [Header("Food Destination")]
     public Transform foodEndPoint;
+
+    [Header("Belt Food Detection")]
+    public BoxCollider beltFoodArea;
 
     [Header("Six Round Timer Settings")]
     public float[] roundTimes =
@@ -67,6 +70,7 @@ public class RoundManager : MonoBehaviour
             UnityEngine.Debug.LogError(
                 "RoundManager: Please assign Belt!"
             );
+
             enabled = false;
             return;
         }
@@ -76,6 +80,17 @@ public class RoundManager : MonoBehaviour
             UnityEngine.Debug.LogError(
                 "RoundManager: Please assign Food End Point!"
             );
+
+            enabled = false;
+            return;
+        }
+
+        if (beltFoodArea == null)
+        {
+            UnityEngine.Debug.LogError(
+                "RoundManager: Please assign Belt Food Area!"
+            );
+
             enabled = false;
             return;
         }
@@ -85,6 +100,7 @@ public class RoundManager : MonoBehaviour
             UnityEngine.Debug.LogError(
                 "RoundManager: NoteTrigger is missing!"
             );
+
             enabled = false;
             return;
         }
@@ -95,7 +111,6 @@ public class RoundManager : MonoBehaviour
     private void Update()
     {
         // Preparation countdown
-
         if (isCounting)
         {
             remainingTime -= Time.deltaTime;
@@ -103,7 +118,9 @@ public class RoundManager : MonoBehaviour
 
             if (evaUIBridge != null)
             {
-                evaUIBridge.UpdateRemainingTime(remainingTime);
+                evaUIBridge.UpdateRemainingTime(
+                    remainingTime
+                );
             }
 
             if (remainingTime <= 0f)
@@ -111,7 +128,6 @@ public class RoundManager : MonoBehaviour
                 StartTransport();
             }
         }
-
 
         // Empty conveyor
         if (isTransporting && transportingEmpty)
@@ -177,6 +193,60 @@ public class RoundManager : MonoBehaviour
         food.StopMoving();
     }
 
+    // Check whether a food object is on the belt.
+    private bool IsFoodOnBelt(ConveyorFoodMover food)
+    {
+        if (food == null || beltFoodArea == null)
+            return false;
+
+        // Convert world position into the collider's
+        // local space so the check also works if the
+        // conveyor is rotated.
+        Vector3 localPosition =
+            beltFoodArea.transform.InverseTransformPoint(
+                food.transform.position
+            );
+
+        Vector3 center = beltFoodArea.center;
+        Vector3 halfSize = beltFoodArea.size * 0.5f;
+
+        Vector3 difference = localPosition - center;
+
+        return Mathf.Abs(difference.x) <= halfSize.x &&
+               Mathf.Abs(difference.y) <= halfSize.y &&
+               Mathf.Abs(difference.z) <= halfSize.z;
+    }
+
+    // Remove registered ingredients that are not
+    // physically located on the conveyor belt.
+    private void RemoveFoodsOutsideBelt()
+    {
+        for (int i = foods.Count - 1; i >= 0; i--)
+        {
+            ConveyorFoodMover food = foods[i];
+
+            if (food == null)
+            {
+                foods.RemoveAt(i);
+                continue;
+            }
+
+            if (!IsFoodOnBelt(food))
+            {
+                UnityEngine.Debug.Log(
+                    food.name +
+                    " is outside the conveyor belt. Skipped."
+                );
+
+                foods.RemoveAt(i);
+            }
+        }
+
+        UnityEngine.Debug.Log(
+            "Valid food count on belt: " + foods.Count
+        );
+    }
+
     // Start a new round.
     public void StartRound()
     {
@@ -199,21 +269,27 @@ public class RoundManager : MonoBehaviour
         belt.StopBelt();
 
         remainingTime = roundTimes[currentRound];
+
         if (roundCardDisplay != null)
         {
-            roundCardDisplay.ShowRound(currentRound + 1);
+            roundCardDisplay.ShowRound(
+                currentRound + 1
+            );
         }
 
         if (evaUIBridge != null)
         {
-            evaUIBridge.BeginRound(remainingTime);
+            evaUIBridge.BeginRound(
+                remainingTime
+            );
         }
-
 
         // Load the correct answer for this round.
         if (NoteTrigger.Instance != null)
         {
-            NoteTrigger.Instance.PrepareRound(currentRound);
+            NoteTrigger.Instance.PrepareRound(
+                currentRound
+            );
         }
 
         UnityEngine.Debug.Log(
@@ -230,11 +306,15 @@ public class RoundManager : MonoBehaviour
         isTransporting = true;
         AllArrived = false;
 
+        // NEW:
+        // Only transport food that is actually
+        // located on the conveyor belt.
+        RemoveFoodsOutsideBelt();
+
         if (evaUIBridge != null)
         {
             evaUIBridge.BeginChecking();
         }
-
 
         UnityEngine.Debug.Log(
             "Registered food count: " + foods.Count
@@ -242,13 +322,16 @@ public class RoundManager : MonoBehaviour
 
         belt.StartBelt();
 
-        UnityEngine.Debug.Log("TRANSPORT STARTED!");
+        UnityEngine.Debug.Log(
+            "TRANSPORT STARTED!"
+        );
 
         // Empty round still moves the belt.
         if (foods.Count == 0)
         {
             transportingEmpty = true;
-            emptyTransportTimer = emptyTransportDuration;
+            emptyTransportTimer =
+                emptyTransportDuration;
 
             UnityEngine.Debug.Log(
                 "EMPTY CONVEYOR STARTED!"
@@ -295,7 +378,8 @@ public class RoundManager : MonoBehaviour
 
     private IEnumerator FinishRoundRoutine()
     {
-        // Give the trigger time to receive final physics events.
+        // Give the trigger time to receive
+        // final physics events.
         yield return new WaitForFixedUpdate();
         yield return new WaitForFixedUpdate();
 
@@ -314,7 +398,7 @@ public class RoundManager : MonoBehaviour
             );
         }
 
-        // Let the success/failure message stay visible.
+        // Keep result visible briefly.
         yield return new WaitForSeconds(
             Mathf.Max(0f, resultDisplayDuration)
         );
@@ -335,7 +419,8 @@ public class RoundManager : MonoBehaviour
 
         waitingForJudgement = false;
 
-        // Remove previous round's transported ingredients.
+        // Only destroy ingredients that were
+        // actually transported in this round.
         foreach (ConveyorFoodMover food in foods)
         {
             if (food != null)
@@ -346,7 +431,8 @@ public class RoundManager : MonoBehaviour
 
         foods.Clear();
 
-        if (evaUIBridge != null && evaUIBridge.IsGameOver)
+        if (evaUIBridge != null &&
+            evaUIBridge.IsGameOver)
         {
             FinishGame();
             return;
@@ -374,9 +460,13 @@ public class RoundManager : MonoBehaviour
         AllArrived = false;
 
         if (belt != null)
+        {
             belt.StopBelt();
+        }
 
-        UnityEngine.Debug.Log("GAME FINISHED!");
+        UnityEngine.Debug.Log(
+            "GAME FINISHED!"
+        );
 
         if (evaUIBridge != null)
         {

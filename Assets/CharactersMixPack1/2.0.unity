@@ -14816,12 +14816,12 @@ MonoBehaviour:
   belt: {fileID: 894512621}
   foodEndPoint: {fileID: 1335794803}
   roundTimes:
+  - 30
   - 40
   - 60
-  - 60
-  - 10
   - 20
-  - 25
+  - 30
+  - 30
   currentRound: 0
   remainingTime: 0
   emptyTransportDuration: 3
