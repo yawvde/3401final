@@ -212,6 +212,7 @@ GameObject:
   - component: {fileID: 2159019346328882377}
   - component: {fileID: 6484450534453296798}
   - component: {fileID: -1784677575716182270}
+  - component: {fileID: 3618369968517771243}
   m_Layer: 0
   m_Name: Burger_With_Note 1
   m_TagString: Untagged
@@ -263,7 +264,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 2
 --- !u!65 &2159019346328882377
 BoxCollider:
@@ -306,6 +307,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noteType: 2
+--- !u!114 &3618369968517771243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3152592455789234783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a8e550ea5b84a52b8c06b5c5661d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beltFoodArea: {fileID: 0}
+  groundScale: 0.8
+  beltScale: 0.5
 --- !u!1 &6851952859667629444
 GameObject:
   m_ObjectHideFlags: 0

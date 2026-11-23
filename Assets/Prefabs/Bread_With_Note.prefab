@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4478589305454365704}
   - component: {fileID: -872744388979039409}
   - component: {fileID: 2589000885026672708}
+  - component: {fileID: 8065857990417513538}
   m_Layer: 0
   m_Name: Bread_With_Note
   m_TagString: Untagged
@@ -65,7 +66,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 2
 --- !u!65 &4478589305454365704
 BoxCollider:
@@ -107,7 +108,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfd1b54166984bb4f9170d00b2381668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteId: Half
+  noteType: 1
+--- !u!114 &8065857990417513538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581254297115511454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a8e550ea5b84a52b8c06b5c5661d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beltFoodArea: {fileID: 0}
+  groundScale: 0.8
+  beltScale: 0.5
 --- !u!1 &4267535865177510145
 GameObject:
   m_ObjectHideFlags: 0

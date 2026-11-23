@@ -13,22 +13,38 @@ public class EndGameUI : MonoBehaviour
     public Color gameOverColor = Color.red;
     public Color completeColor = Color.yellow;
 
+    [Header("Game Over Audio")]
+    public GameOverSound gameOverSound;
+
+    private bool gameOverTriggered = false;
+
     private void Awake()
     {
         HideEndScreen();
     }
 
-    // 三条生命全部耗尽时调用
+    // Called when the player loses the game.
     public void ShowGameOver()
     {
+        if (gameOverTriggered)
+            return;
+
+        gameOverTriggered = true;
+
         ShowEndScreen(
             "GAME OVER",
             "The performance has ended!",
             gameOverColor
         );
+
+        // Play Game Over sound only once.
+        if (gameOverSound != null)
+        {
+            gameOverSound.PlayGameOverSound();
+        }
     }
 
-    // 六轮完成时调用
+    // Called when all rounds are completed.
     public void ShowComplete(int earnedStars)
     {
         earnedStars = Mathf.Clamp(earnedStars, 0, 3);
@@ -68,9 +84,12 @@ public class EndGameUI : MonoBehaviour
         {
             endPanel.SetActive(false);
         }
+
+        gameOverTriggered = false;
     }
 
 #if UNITY_EDITOR
+
     [ContextMenu("TEST - Game Over")]
     private void TestGameOver()
     {
@@ -88,5 +107,6 @@ public class EndGameUI : MonoBehaviour
     {
         HideEndScreen();
     }
+
 #endif
 }

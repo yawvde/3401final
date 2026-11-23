@@ -35,7 +35,9 @@ public class NotePanel : MonoBehaviour
         {
             NoteType.Note7, NoteType.Note2,
             NoteType.Note7, NoteType.Note8,
-            NoteType.Note2, NoteType.Note4
+            NoteType.Note2, NoteType.Note4,
+            NoteType.Note3, NoteType.Note8,
+            NoteType.Note8
         },
 
         // Round 4

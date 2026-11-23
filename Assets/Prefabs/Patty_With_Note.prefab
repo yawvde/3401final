@@ -196,6 +196,7 @@ GameObject:
   - component: {fileID: 6413869341777116285}
   - component: {fileID: 7432488674266680479}
   - component: {fileID: 5059446053339420357}
+  - component: {fileID: 8986470513263922507}
   m_Layer: 0
   m_Name: Patty_With_Note
   m_TagString: Untagged
@@ -247,7 +248,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 2
 --- !u!65 &6413869341777116285
 BoxCollider:
@@ -290,3 +291,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noteType: 7
+--- !u!114 &8986470513263922507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7476854611984887390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a8e550ea5b84a52b8c06b5c5661d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beltFoodArea: {fileID: 0}
+  groundScale: 0.8
+  beltScale: 0.5

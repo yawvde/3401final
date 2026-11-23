@@ -195,6 +195,7 @@ GameObject:
   - component: {fileID: 189694082803125907}
   - component: {fileID: 8478136241301586742}
   - component: {fileID: -4087009128055177287}
+  - component: {fileID: -4431595872237381425}
   m_Layer: 0
   m_Name: Tomato__With_Note
   m_TagString: Untagged
@@ -247,7 +248,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 2
 --- !u!65 &189694082803125907
 BoxCollider:
@@ -290,6 +291,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noteType: 8
+--- !u!114 &-4431595872237381425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6074216840294964936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a8e550ea5b84a52b8c06b5c5661d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beltFoodArea: {fileID: 0}
+  groundScale: 0.8
+  beltScale: 0.5
 --- !u!1 &6461191582062434853
 GameObject:
   m_ObjectHideFlags: 0
