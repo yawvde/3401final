@@ -9,6 +9,10 @@ public class EvaUIBridge : MonoBehaviour
     public TimerUI timerUI;
     public EndGameUI endGameUI;
 
+    [Header("Game Settings")]
+    [Tooltip("Total number of rounds after removing old Round 3")]
+    public int totalGameRounds = 5;
+
     private bool roundResolved = false;
     private bool gameEnded = false;
 
@@ -21,10 +25,11 @@ public class EvaUIBridge : MonoBehaviour
         }
     }
 
-    // 每轮开始：恢复接收判定，显示倒计时
+    // Called when a new round begins.
     public void BeginRound(float duration)
     {
-        if (gameEnded) return;
+        if (gameEnded)
+            return;
 
         roundResolved = false;
 
@@ -35,82 +40,133 @@ public class EvaUIBridge : MonoBehaviour
         }
     }
 
-    // 显示 RoundManager 提供的真实剩余时间
+    // Update remaining round time.
     public void UpdateRemainingTime(float seconds)
     {
-        if (roundResolved || gameEnded) return;
+        if (roundResolved || gameEnded)
+            return;
 
         if (timerUI != null)
+        {
             timerUI.SetTime(seconds);
+        }
     }
 
-    // 倒计时结束，开始运输与检查
+    // Called when the conveyor starts checking.
     public void BeginChecking()
     {
-        if (roundResolved || gameEnded) return;
+        if (roundResolved || gameEnded)
+            return;
 
         if (timerUI != null)
+        {
             timerUI.HideTimer();
+        }
 
         if (resultFeedbackUI != null)
+        {
             resultFeedbackUI.ShowChecking();
+        }
     }
 
-    // 自动识别系统返回正确或错误
+    // Called by the note recognition system.
     public void ResolveRound(bool isCorrect)
     {
-        if (roundResolved || gameEnded) return;
+        if (roundResolved || gameEnded)
+            return;
 
         roundResolved = true;
 
         if (isCorrect)
         {
             if (scoreLifeUI != null)
+            {
                 scoreLifeUI.AddSuccess();
+            }
 
             if (resultFeedbackUI != null)
+            {
                 resultFeedbackUI.ShowSuccess();
+            }
         }
         else
         {
             if (scoreLifeUI != null)
+            {
                 scoreLifeUI.LoseLife();
+            }
 
             if (resultFeedbackUI != null)
+            {
                 resultFeedbackUI.ShowFailure();
+            }
+        }
+
+        if (IsGameOver)
+        {
+            Debug.Log(
+                "GAME OVER: Three failed rounds."
+            );
         }
     }
 
-    // 最终结算：生命归零或完成全部六轮
+    // Called when the game ends.
     public void FinishGame()
     {
-        if (gameEnded) return;
+        if (gameEnded)
+            return;
 
         gameEnded = true;
 
         if (timerUI != null)
+        {
             timerUI.HideTimer();
+        }
 
-        if (endGameUI == null) return;
+        if (endGameUI == null)
+        {
+            Debug.LogWarning(
+                "EvaUIBridge: EndGameUI is missing!"
+            );
+            return;
+        }
 
+        // Three failures: Game Over.
         if (IsGameOver)
         {
             endGameUI.ShowGameOver();
+            return;
         }
-        else
-        {
-            int successes = scoreLifeUI != null
-                ? scoreLifeUI.SuccessfulRounds : 0;
 
-            int totalRounds = scoreLifeUI != null
-                ? Mathf.Max(1, scoreLifeUI.totalRounds)
-                : 6;
+        // Final score based on five rounds.
+        int successes = scoreLifeUI != null
+            ? scoreLifeUI.SuccessfulRounds
+            : 0;
 
-            int earnedStars = Mathf.FloorToInt(
-                (float)successes / totalRounds * 3f
-            );
+        int totalRounds = Mathf.Max(1, totalGameRounds);
 
-            endGameUI.ShowComplete(earnedStars);
-        }
+        successes = Mathf.Clamp(
+            successes,
+            0,
+            totalRounds
+        );
+
+        int earnedStars = Mathf.FloorToInt(
+            (float)successes / totalRounds * 3f
+        );
+
+        earnedStars = Mathf.Clamp(
+            earnedStars,
+            0,
+            3
+        );
+
+        Debug.Log(
+            "GAME COMPLETE! Successes: " +
+            successes + "/" + totalRounds +
+            ", Stars: " + earnedStars
+        );
+
+        endGameUI.ShowComplete(earnedStars);
     }
 }

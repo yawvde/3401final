@@ -30,24 +30,16 @@ public class NotePanel : MonoBehaviour
             NoteType.Note7
         },
 
-        // Round 3
-        new NoteType[]
-        {
-            NoteType.Note7, NoteType.Note2,
-            NoteType.Note7, NoteType.Note8,
-            NoteType.Note2, NoteType.Note4,
-            NoteType.Note3, NoteType.Note8,
-            NoteType.Note8
-        },
+       
 
-        // Round 4
+        // Round 3
         new NoteType[]
         {
             NoteType.Note1, NoteType.Note2,
             NoteType.Note7
         },
 
-        // Round 5
+        // Round 4
         new NoteType[]
         {
             NoteType.Note8, NoteType.Note5,
@@ -58,7 +50,7 @@ public class NotePanel : MonoBehaviour
             NoteType.Note4, NoteType.Note7
         },
 
-        // Round 6
+        // Round 5
         new NoteType[]
         {
             NoteType.Note4, NoteType.Note4,

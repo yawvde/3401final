@@ -6,14 +6,14 @@ public class RoundCardDisplay : MonoBehaviour
     [Header("Music Manager")]
     public MusicTransitionManager musicManager;
 
-    [Header("Six Round Panels")]
-    public GameObject[] roundPanels = new GameObject[6];
+    [Header("Five Round Panels")]
+    public GameObject[] roundPanels = new GameObject[5];
 
     [Header("Round Time Signatures")]
     [Tooltip("4 = 4/4 music, 3 = 3/4 music")]
-    public int[] roundMeters = new int[6]
+    public int[] roundMeters = new int[5]
     {
-        4, 4, 3, 3, 4, 3
+        4, 4, 3, 4, 3
     };
 
     [Header("Testing")]
@@ -45,19 +45,15 @@ public class RoundCardDisplay : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha5))
             ShowRound(5);
-
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-            ShowRound(6);
     }
 
     public void ShowRound(int roundNumber)
     {
-        // Check valid round number.
         if (roundPanels == null ||
             roundNumber < 1 ||
             roundNumber > roundPanels.Length)
         {
-            Debug.LogWarning(
+            UnityEngine.Debug.LogWarning(
                 "Invalid round number: " + roundNumber
             );
             return;
@@ -65,7 +61,7 @@ public class RoundCardDisplay : MonoBehaviour
 
         currentRound = roundNumber;
 
-        // Show only the current round card.
+        // Display only the selected round panel.
         for (int i = 0; i < roundPanels.Length; i++)
         {
             if (roundPanels[i] != null)
@@ -76,7 +72,7 @@ public class RoundCardDisplay : MonoBehaviour
             }
         }
 
-        // Switch music according to the round meter.
+        // Change background music meter.
         int meterIndex = roundNumber - 1;
 
         if (musicManager != null &&
@@ -95,14 +91,14 @@ public class RoundCardDisplay : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning(
+                UnityEngine.Debug.LogWarning(
                     "Unsupported meter in round " +
                     roundNumber + ": " + meter
                 );
             }
         }
 
-        Debug.Log(
+        UnityEngine.Debug.Log(
             "Showing Round " + currentRound
         );
     }

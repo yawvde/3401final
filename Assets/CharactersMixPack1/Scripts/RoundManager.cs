@@ -25,7 +25,7 @@ public class RoundManager : MonoBehaviour
     [Header("Six Round Timer Settings")]
     public float[] roundTimes =
     {
-        10f, 10f, 25f, 10f, 20f, 25f
+        10f, 10f, 10f, 20f, 25f
     };
 
     [Header("Current Round")]
